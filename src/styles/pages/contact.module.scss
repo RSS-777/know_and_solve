@@ -1,0 +1,101 @@
+.wrapper-contact {
+    padding: 0 10px 10px;
+    background-image: radial-gradient(circle, rgb(255, 255, 255), rgb(255, 252, 189));
+    min-height: 100vh;
+}
+
+.container-form {
+    position: relative;
+    background-image: url('../../assets/images/contact/foneLetter.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: calc(100vh - 165px);
+    max-width: 1000px;
+    min-height: 70vh;
+    margin: 0 auto;
+
+    &::after {
+        content: '';
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.798);
+    }
+
+    form {
+        position: absolute;
+        z-index: 2;
+        max-width: 300px;
+        width: 100%;
+        box-shadow: 2px 2px 12px rgb(0, 0, 132);
+        padding: 20px;
+        margin: 10px auto;
+        border-radius: 10px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+
+        input {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 0 5px 0 blue;
+            padding: 0 5px;
+        }
+
+        textarea {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 0 5px 0 blue;
+            padding: 5px;
+            width: 100%;
+            height: 80px;
+            margin-top: 10px;
+            resize: none;
+        }
+
+        .block-input {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .block-letter {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .error {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 5px;
+            height: 18px;
+            font-size: 11px;
+            color: red;
+        }
+
+        .block-button {
+            display: flex;
+            justify-content: flex-end;
+
+            button {
+                padding: 2px 5px;
+                border-radius: 5px;
+                border: 1px solid blue;
+                box-shadow: 1px 1px 5px 0 blue;
+                margin-top: 10px;
+                cursor: pointer;
+
+                &:hover {
+                    box-shadow: 0.5px 0.5px 3px 0 blue;
+                    color: red;
+                }
+            }
+        }
+    }
+}
