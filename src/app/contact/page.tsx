@@ -1,14 +1,22 @@
 "use client"
 
+import type { Metadata } from "next";
 import { Header } from '../../components/Header';
 import { useForm, SubmitHandler } from "react-hook-form";
 import styles from '../../styles/pages/contact.module.scss';
+
+export const metadata: Metadata = {
+    title: "Контакти – Зв'яжіться з нами",
+    description: "Маєте питання чи пропозиції? Зв'яжіться з нами через форму зворотного зв’язку або за вказаними контактами.",
+    keywords: "Контакти, Зворотний зв'язок, Допомога, Підтримка, Запитання, Пропозиції, Адміністрація"
+};
 
 type TypeFormData = {
     firstName: string,
     lastName: string,
     letter: string
-}
+};
+
 const Contact = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<TypeFormData>();
 
@@ -27,11 +35,11 @@ const Contact = () => {
                             id='first-name'
                             autoComplete="off"
                             {...register('firstName', {
-                                required: 'Це поле є обов\'язковим.',
-                                minLength: { value: 3, message: 'Ім\'я має бути мінімум 3 символи.' },
+                                required: "Це поле є обов'язковим.",
+                                minLength: { value: 3, message: "Ім'я має бути мінімум 3 символи." },
                                 pattern: {
                                     value: /^[A-Za-zА-Яа-яЁёІіЇїЄєҐґ'ї]+$/i,
-                                    message: 'Ім\'я може містити тільки букви.'
+                                    message: "Ім'я може містити тільки букви."
                                 }
                             })}
                         />
@@ -43,7 +51,7 @@ const Contact = () => {
                             id='last-name'
                             autoComplete="off"
                             {...register('lastName', {
-                                required: 'Це поле є обов\'язковим.',
+                                required: "Це поле є обов'язковим.",
                                 minLength: { value: 3, message: 'Прізвище має бути мінімум 3 символи.' },
                                 pattern: {
                                     value: /^[A-Za-zА-Яа-яЁёІіЇїЄєҐґ'ї]+$/i,
@@ -59,7 +67,7 @@ const Contact = () => {
                             id='letter'
                             autoComplete="off"
                             {...register('letter', {
-                                required: 'Це поле є обов\'язковим.',
+                                required: "Це поле є обов'язковим.",
                                 minLength: { value: 10, message: 'Опишіть проблему або пропозицію детальніше.' }
                             })}
                         />
