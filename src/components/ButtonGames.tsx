@@ -22,3 +22,5 @@ export const ButtonGames = forwardRef<HTMLButtonElement, IProps>(
         );
     }
 );
+
+ButtonGames.displayName = 'ButtonGames';

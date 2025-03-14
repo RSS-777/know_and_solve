@@ -22,8 +22,8 @@ const shuffleArray = (array: number[]) => {
 };
 
 const anyNumbers = (endNumber: number) => {
-    let arrNumber: number[] = [];
-    let count = 6;
+    const arrNumber: number[] = [];
+    const count = 6;
 
     if (firstNumber !== null && secondNumber !== null) {
         while (arrNumber.length < count) {

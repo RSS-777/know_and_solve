@@ -1,15 +1,8 @@
 "use client"
 
-import type { Metadata } from "next";
-import { Header } from '../../components/Header';
 import { useForm, SubmitHandler } from "react-hook-form";
+import { Header } from '../../components/Header';
 import styles from '../../styles/pages/contact.module.scss';
-
-export const metadata: Metadata = {
-    title: "Контакти – Зв'яжіться з нами",
-    description: "Маєте питання чи пропозиції? Зв'яжіться з нами через форму зворотного зв’язку або за вказаними контактами.",
-    keywords: "Контакти, Зворотний зв'язок, Допомога, Підтримка, Запитання, Пропозиції, Адміністрація"
-};
 
 type TypeFormData = {
     firstName: string,
