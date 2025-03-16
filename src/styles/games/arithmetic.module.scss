@@ -53,7 +53,7 @@
     margin-bottom: 10px;
     z-index: 2;
     position: relative;
-    
+
     .block-choice-operation {
         text-align: center;
 
@@ -96,6 +96,10 @@
     transform: translate(-50%, -50%);
     max-width: 100%;
     padding: 10px;
+
+    @media screen and  (orientation: landscape) and (pointer: coarse) {
+        top: 60%;
+    }
 
     .block-operation {
         display: flex;
@@ -232,6 +236,12 @@
     transform: translateX(-50%);
     display: flex;
     gap: 10px;
+    width: 100%;
+    justify-content: center;
+
+    @media screen and  (orientation: landscape) and (pointer: coarse) {
+        bottom: 20px;
+    }
 }
 
 .block-table-answer {
@@ -302,9 +312,9 @@
         }
     }
 
-    > span {
+    >span {
         position: relative;
-        border: 2px solid  blue;
+        border: 2px solid blue;
         background-color: rgb(159, 206, 255);
         width: 46px;
         height: 46px;
@@ -312,6 +322,10 @@
         justify-content: center;
         align-items: center;
 
+    }
+
+    @media screen and  (orientation: landscape) and (pointer: coarse) {
+        display: block;
     }
 }
 
