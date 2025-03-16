@@ -15,7 +15,8 @@ const Task = () => {
     <div className={styles['tasks-container']}>
       <Header title="Виберіть завдання:" />
       <section className={styles['block-games']}>
-        <GameCard h5="Arithmetic" image={imageArithmetic} link="/games/arithmetic-trainer" />
+        <GameCard h5="Математична пара" image={imageArithmetic} link="/games/arithmetic-trainer" />
+        <GameCard h5="Математичне тріо" image={imageArithmetic} link="/games/mathematical-trio" />
       </section>
     </div>
   )

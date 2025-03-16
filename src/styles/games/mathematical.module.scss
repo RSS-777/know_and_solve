@@ -1,0 +1,27 @@
+.container {
+    h2 {
+        text-align: center;
+    }
+}
+
+.block-game-mechanics {
+    display: flex;
+
+    .number {
+        border: 2px solid blue;
+        width: 36px;
+        height: 36px;
+        text-align: center;
+        font-size: 26px;
+        line-height: 36px;
+    }
+
+    .sign {
+        color: blue;
+        width: 26px;
+        height: 36px;
+        text-align: center;
+        font-size: 26px;
+        line-height: 36px;
+    }
+}

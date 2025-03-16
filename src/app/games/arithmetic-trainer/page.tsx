@@ -150,7 +150,7 @@ const Arithmetic = () => {
 
     return (
         <div className={`${styles.container}  ${(winGame && correctAnswer === 20) ? styles['fone-success-best'] : (winGame ? styles['fone-success'] : styles['fone-default'])}`}>
-            <h2>Тренажер з арифметики</h2>
+            <h2>Математична пара</h2>
             <div className={`${styles['settings-container']} ${winGame ? styles['hide-block'] : ''}`}>
                 <div className={styles['block-choice-operation']}>
                     <span>Оберіть дію:</span>
