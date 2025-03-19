@@ -1,7 +1,7 @@
 'use client'
 
 import styles from '../../../styles/games/mathematical.module.scss';
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { ButtonGames } from '../../../components/ButtonGames';
 
 const Mathematical = () => {
@@ -11,6 +11,20 @@ const Mathematical = () => {
     const [oneSing, setOneSing] = useState<string | null>('-')
     const [twoSing, setTwoSing] = useState<string | null>('+')
     const [result, setResult] = useState<number | string>('?')
+
+    const handleStartGame = () => {
+        setOneNumber(5)
+        setTwoNumber(4)
+        setTreeNumber(7)
+        setOneSing('+')
+        setTwoSing('-')
+        setResult(20)
+    }
+
+
+    const handleStopGame = () => {
+
+    }
 
     return (
         <div className={styles.container}>
@@ -27,9 +41,9 @@ const Mathematical = () => {
                     <div className={`${styles.result} ${styles['number']}`}>{result}</div>
                 </div>
                 <div className={styles['block-button']}>
-                    {/* <ButtonGames link="/tasks">До завдань</ButtonGames>
-                    <ButtonGames onClick={handleStartGame} ref={buttonStartRef}>Старт</ButtonGames>
-                    <ButtonGames onClick={handleStopGame}>Завершити</ButtonGames> */}
+                    <ButtonGames link="/tasks">До завдань</ButtonGames>
+                    <ButtonGames onClick={handleStartGame}>Старт</ButtonGames>
+                    <ButtonGames onClick={handleStopGame}>Завершити</ButtonGames>
                 </div>
             </div>
         </div>
