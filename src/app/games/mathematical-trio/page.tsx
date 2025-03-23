@@ -93,8 +93,8 @@ const Mathematical = () => {
             buttonRef.current?.classList.add(styles['not-active'])
             setNumberQuestions(prev => prev = ++prev)
 
-            let oneS = generateSign(selectedOperator);
-            let twoS = generateSign(selectedOperator);
+            const oneS = generateSign(selectedOperator);
+            const twoS = generateSign(selectedOperator);
 
             // Логіка для віднімання першого знаку
             if (oneS === '-') {
