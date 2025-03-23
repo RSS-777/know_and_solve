@@ -12,4 +12,10 @@
         border: 2px solid red;
         box-shadow: 2px 2px 3px 0 black;
     }
+
+    &:disabled {
+        color: gray;
+        border: 2px solid grey;
+        pointer-events: none;
+    }
 }

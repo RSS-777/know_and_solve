@@ -1,27 +1,205 @@
 .container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100vh;
+
     h2 {
         text-align: center;
     }
 }
 
-.block-game-mechanics {
+.container-flex {
+    position: relative;
     display: flex;
 
-    .number {
-        border: 2px solid blue;
-        width: 36px;
-        height: 36px;
-        text-align: center;
-        font-size: 26px;
-        line-height: 36px;
+    @media (max-width: 678px) {
+        flex-direction: column;
+        flex: 1 1 auto;
+    }
+}
+
+.block-settings {
+    background-color: rgb(205, 205, 205);
+    height: calc(100vh - 48px);
+    width: fit-content;
+    padding: 10px 5px;
+
+    .settings-sign-operation {
+        p {
+            color: blue;
+        }
+
+        >div {
+            div {
+                max-width: 120px;
+                display: flex;
+                justify-content: space-between;
+            }
+        }
     }
 
-    .sign {
-        color: blue;
-        width: 26px;
-        height: 36px;
-        text-align: center;
-        font-size: 26px;
-        line-height: 36px;
+    .settings-choise-range {
+        label {
+            color: blue;
+        }
+
+        select {
+            max-height: 50px;
+            overflow-y: auto;
+            color: red;
+            text-align: center;
+        }
     }
+
+    @media (max-width: 678px) {
+        height: fit-content;
+        width: 100%;
+    }
+}
+
+.non-interactive {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.container-blocks-game-mechanics {
+    position: relative;
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .count-questions {
+        position: absolute;
+        top: 0;
+        right: 10px;
+    }
+
+    >div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        width: 100%;
+        height: 80%;
+
+        .block-game-mechanics {
+            display: flex;
+            align-items: center;
+
+            .number {
+                border: 2px solid blue;
+                width: fit-content;
+                min-width: 36px;
+                padding: 0 5px;
+                height: 36px;
+                text-align: center;
+                font-size: 26px;
+                line-height: 36px;
+            }
+
+            .sign {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: blue;
+                width: 26px;
+                height: 26px;
+                font-size: 26px;
+            }
+
+            .result {
+                position: relative;
+                z-index: 2;
+                width: 80px;
+                min-width: 36px;
+                padding: 0 5px;
+
+
+                input {
+                    position: absolute;
+                    z-index: 1;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    font-size: 26px;
+                    text-align: center;
+                    background-color: transparent;
+                    border: none;
+                }
+
+                .hidden-input {
+                    display: none;
+                }
+            }
+
+            .answer-correct {
+                background-image: url('../../assets/images/arithmetic/ok.png');
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+
+            .answer-not-correct {
+                background-image: url('../../assets/images/arithmetic/close.png');
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+        }
+
+        .block-button {
+            user-select: none;
+
+            .not-active {
+                color: gray;
+                border: 2px solid grey;
+                pointer-events: none;
+            }
+        }
+
+        .block-error {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+
+            span {
+                color: red;
+            }
+        }
+    }
+}
+
+.block-info-games {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    p {
+        color: blue;
+        font-size: 22px;
+    }
+
+    li {
+        list-style: none;
+
+        span {
+            color: blue;
+        }
+    }
+}
+
+.show-information-block {
+    display: flex;
+}
+
+.hidden-element {
+    display: none;
 }
