@@ -12,7 +12,10 @@ const roboto = Roboto({
 export const metadata: Metadata = {
   title: "Загальний заголовок для сайту",
   description: "Це загальний опис для всього сайту.",
-  keywords: "React, Next.js, сайт"
+  keywords: "React, Next.js, сайт",
+  icons: {
+    icon: '/favicon.ico', 
+  },
 };
 
 export default function RootLayout({
