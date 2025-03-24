@@ -3,6 +3,7 @@ import { GameCard } from '../../components/GameCard';
 import type { Metadata } from "next";
 import styles from '../../styles/pages/tasks.module.scss';
 import imageArithmetic from '../../assets/images/arithmetic/cloud.png';
+import imageMathematical from '../../assets/images/mathematical/wrapperMathematical.png';
 
 export const metadata: Metadata = {
   title: "Завдання для школярів – Логічні, математичні та творчі задачі",
@@ -16,7 +17,7 @@ const Task = () => {
       <Header title="Виберіть завдання:" />
       <section className={styles['block-games']}>
         <GameCard h5="Математична пара" image={imageArithmetic} link="/games/arithmetic-trainer" />
-        <GameCard h5="Математичне тріо" image={imageArithmetic} link="/games/mathematical-trio" />
+        <GameCard h5="Математичне тріо" image={imageMathematical} link="/games/mathematical-trio" />
       </section>
     </div>
   )

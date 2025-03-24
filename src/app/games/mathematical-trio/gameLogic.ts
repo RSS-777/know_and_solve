@@ -267,6 +267,7 @@ const handleAnswer = ({
 
             if (numberQuestions === 20) {
                 setGameEnd(true)
+                playSound({ index: 3, soundPath: '/sound/mathematical/win.mp3', audioRef });
                 return
             } else {
                 handleStartGame({
