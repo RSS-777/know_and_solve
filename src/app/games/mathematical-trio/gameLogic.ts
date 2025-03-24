@@ -265,7 +265,7 @@ const handleAnswer = ({
             inputRef.current?.classList.remove(styles['hidden-input'])
             resultRef.current?.classList.remove(styles['answer-correct'])
 
-            if (numberQuestions === 3) {
+            if (numberQuestions === 20) {
                 setGameEnd(true)
                 return
             } else {
@@ -299,7 +299,7 @@ const handleAnswer = ({
             inputRef.current?.classList.remove(styles['hidden-input'])
             resultRef.current?.classList.remove(styles['answer-not-correct'])
 
-            if (numberQuestions === 3) {
+            if (numberQuestions === 20) {
                 setGameEnd(true)
                 playSound({ index: 3, soundPath: '/sound/mathematical/win.mp3', audioRef });
                 return
