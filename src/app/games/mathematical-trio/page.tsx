@@ -3,48 +3,7 @@
 import styles from '../../../styles/games/mathematical.module.scss';
 import { useEffect, useState, useRef } from 'react';
 import { ButtonGames } from '../../../components/ButtonGames';
-
-const generateRandomNumb = (number: number) => {
-    const numb = Math.ceil(Math.random() * number)
-    return numb
-};
-
-
-const generateSign = (arrSign: string[]) => {
-    const numb = Math.floor(Math.random() * arrSign.length)
-    return arrSign[numb]
-};
-
-type TypeParamsCalc = {
-    oneSign: string,
-    twoSign: string,
-    oneNumber: number,
-    twoNumber: number,
-    threeNumber: number
-}
-
-const calculate = ({ oneSign, twoSign, oneNumber, twoNumber, threeNumber }: TypeParamsCalc) => {
-    let result = 0
-
-    if (oneSign === '+' && twoSign === '+') result = oneNumber + twoNumber + threeNumber
-    if (oneSign === '-' && twoSign === '-') result = oneNumber - twoNumber - threeNumber
-    if (oneSign === '-' && twoSign === '+') result = oneNumber - twoNumber + threeNumber
-    if (oneSign === '+' && twoSign === '-') result = oneNumber + twoNumber - threeNumber
-
-    if (oneSign === '*' && twoSign === '*') result = oneNumber * twoNumber * threeNumber
-    if (oneSign === '*' && twoSign === '+') result = oneNumber * twoNumber + threeNumber
-    if (oneSign === '*' && twoSign === '-') result = oneNumber * twoNumber - threeNumber
-    if (oneSign === '+' && twoSign === '*') result = oneNumber + (twoNumber * threeNumber)
-    if (oneSign === '-' && twoSign === '*') result = oneNumber - (twoNumber * threeNumber)
-
-    if (oneSign === '/' && twoSign === '/') result = oneNumber / twoNumber / threeNumber
-    if (oneSign === '/' && twoSign === '+') result = oneNumber / twoNumber + threeNumber
-    if (oneSign === '/' && twoSign === '-') result = oneNumber / twoNumber - threeNumber
-    if (oneSign === '+' && twoSign === '/') result = oneNumber + (twoNumber / threeNumber)
-    if (oneSign === '-' && twoSign === '/') result = oneNumber - (twoNumber / threeNumber)
-
-    return result
-}
+import { clearValues, handleStartGame, handleStopGame, handleAnswer } from './gameLogic';
 
 const Mathematical = () => {
     const [oneNumber, setOneNumber] = useState<number>(0)
@@ -58,6 +17,7 @@ const Mathematical = () => {
     const [correctAnswer, setCorrectAnswer] = useState<number>(0)
     const [incorrectAnswer, setIncorrectAnswer] = useState<number>(0)
     const [numberQuestions, setNumberQuestions] = useState<number>(0)
+    const [gameEnd, setGameEnd] = useState<boolean>(false)
 
     const [range, setRange] = useState<number>(5)
     const [selectedOperator, setSelectedOperator] = useState<string[]>([])
@@ -65,150 +25,32 @@ const Mathematical = () => {
     const resultRef = useRef<HTMLDivElement | null>(null);
     const inputRef = useRef<HTMLInputElement | null>(null);
     const buttonRef = useRef<HTMLButtonElement | null>(null)
-    const blockInfoGames = useRef<HTMLDivElement | null>(null)
+    const blockInfoGamesRef = useRef<HTMLDivElement | null>(null)
     const containerGamesRef = useRef<HTMLDivElement | null>(null)
 
-
     useEffect(() => {
-        if (numberQuestions > 20) {
-            blockInfoGames.current?.classList.add(styles['show-information-block'])
+        if (gameEnd) {
+            blockInfoGamesRef.current?.classList.add(styles['show-information-block'])
             containerGamesRef.current?.classList.add(styles['hidden-element'])
 
             setTimeout(() => {
+                setGameEnd(false)
                 setNumberQuestions(0)
                 setIncorrectAnswer(0)
                 setCorrectAnswer(0)
+                clearValues({ setOneNumber, setTwoNumber, setThreeNumber, setResult, setAnswer, inputRef })
                 buttonRef.current?.classList.remove(styles['not-active'])
-                blockInfoGames.current?.classList.remove(styles['show-information-block'])
+                blockInfoGamesRef.current?.classList.remove(styles['show-information-block'])
                 containerGamesRef.current?.classList.remove(styles['hidden-element'])
             }, 5000)
         }
-    }, [numberQuestions])
+    }, [gameEnd])
 
-    const handleStartGame = () => {
-        if (selectedOperator.length > 0) {
-            let firstNum = generateRandomNumb(range)
-            let secondNum = generateRandomNumb(range)
-            let threeNumb = generateRandomNumb(range)
-            buttonRef.current?.classList.add(styles['not-active'])
-            setNumberQuestions(prev => prev = ++prev)
+    // handleStartGame({selectedOperator, buttonRef, setNumberQuestions,setOneNumber, setTwoNumber, setThreeNumber, setOneSign, setTwoSign, setResult, setError, range, styles })
 
-            const oneS = generateSign(selectedOperator);
-            const twoS = generateSign(selectedOperator);
+    // handleStopGame({buttonRef, blockInfoGamesRef, containerGamesRef, setGameEnd, setNumberQuestions, setIncorrectAnswer, setCorrectAnswer, setGameEnd, styles}) 
 
-            // Логіка для віднімання першого знаку
-            if (oneS === '-') {
-                if (firstNum < secondNum) {
-                    [firstNum, secondNum] = [secondNum, firstNum]
-                }
-
-                if (twoS === '-') {
-                    threeNumb = (firstNum - secondNum < threeNumb) ? generateRandomNumb(firstNum - secondNum) : threeNumb
-                }
-
-                if (twoS === '/') {
-                    while (secondNum % threeNumb !== 0 || (firstNum - (secondNum / threeNumb)) < 0) {
-                        firstNum = generateRandomNumb(range);
-                        secondNum = generateRandomNumb(range);
-                        threeNumb = generateRandomNumb(range / 2);
-                    }
-                }
-
-                if (twoS === '*') {
-                    secondNum = generateRandomNumb(range / 2);
-                    threeNumb = generateRandomNumb(range / 2);
-
-                    if ((firstNum - (secondNum * threeNumb)) < 0) {
-                        firstNum = (secondNum * threeNumb)
-                    }
-                }
-            }
-
-            // Логіка для множення 
-            if (oneS === '*') {
-                if (firstNum * secondNum < threeNumb) {
-                    threeNumb = generateRandomNumb(firstNum * secondNum)
-                }
-
-                if (twoS === '*') {
-
-                }
-            }
-
-            // Логіка для ділення 
-            if (oneS === '/') {
-                if (twoS === '/') {
-
-                }
-            }
-
-            setOneNumber(firstNum);
-            setTwoNumber(secondNum);
-            setThreeNumber(threeNumb);
-            setOneSign(oneS);
-            setTwoSign(twoS);
-
-            const result = calculate({
-                oneSign: oneS,
-                twoSign: twoS,
-                oneNumber: firstNum,
-                twoNumber: secondNum,
-                threeNumber: threeNumb
-            });
-
-            setResult(result);
-        } else {
-            setError('Оберіть хоча б один математичний знак!')
-            setTimeout(() => { setError('') }, 3000)
-        }
-
-    };
-
-    const handleStopGame = () => {
-        buttonRef.current?.classList.remove(styles['not-active'])
-        blockInfoGames.current?.classList.add(styles['show-information-block'])
-        containerGamesRef.current?.classList.add(styles['hidden-element'])
-
-        setTimeout(() => {
-            setNumberQuestions(0)
-            setIncorrectAnswer(0)
-            setCorrectAnswer(0)
-            blockInfoGames.current?.classList.remove(styles['show-information-block'])
-            containerGamesRef.current?.classList.remove(styles['hidden-element'])
-        }, 5000)
-    }
-
-    const handleAnswer = () => {
-        if (answer === result) {
-            setAnswer(null)
-            setCorrectAnswer(prev => prev = prev + 1)
-            inputRef.current?.classList.add(styles['hidden-input'])
-            resultRef.current?.classList.add(styles['answer-correct'])
-
-            setTimeout(() => {
-                if (inputRef.current) {
-                    inputRef.current.value = "";
-                }
-                inputRef.current?.classList.remove(styles['hidden-input'])
-                resultRef.current?.classList.remove(styles['answer-correct'])
-                handleStartGame()
-            }, 3000)
-        } else {
-            setAnswer(null)
-            setIncorrectAnswer(prev => prev = prev + 1)
-            inputRef.current?.classList.add(styles['hidden-input'])
-            resultRef.current?.classList.add(styles['answer-not-correct'])
-
-            setTimeout(() => {
-                if (inputRef.current) {
-                    inputRef.current.value = "";
-                }
-                inputRef.current?.classList.remove(styles['hidden-input'])
-                resultRef.current?.classList.remove(styles['answer-not-correct'])
-                handleStartGame()
-            }, 3000)
-        }
-    }
+    // handleAnswer({setAnswer, setCorrectAnswer, setIncorrectAnswer,, setGameEnd,  inputRef,  resultRef, numberQuestions, answer, result})
 
     const handleSignOperation = (value: string) => {
         setSelectedOperator(prev => {
@@ -232,7 +74,7 @@ const Mathematical = () => {
     return (
         <div className={styles.container}>
             <h2>Математичне тріо</h2>
-            <div className={styles['block-info-games']} ref={blockInfoGames}>
+            <div className={styles['block-info-games']} ref={blockInfoGamesRef}>
                 <p>Ваш результат:</p>
                 <ul>
                     <li>Кількість запитань: <span>{numberQuestions}</span></li>
@@ -294,7 +136,7 @@ const Mathematical = () => {
                     </div>
                 </div>
                 <div className={styles['container-blocks-game-mechanics']}>
-                    <span className={styles['count-questions']}>Кількість запитань:{numberQuestions}</span>
+                    <p className={styles['count-questions']}>Кількість запитань: <span>{numberQuestions}</span></p>
                     <div>
                         <div className={styles['block-game-mechanics']}>
                             <div className={`${styles['one-number']} ${styles['number']}`}>{oneNumber}</div>
@@ -308,16 +150,77 @@ const Mathematical = () => {
                                     type="number"
                                     name="answer"
                                     id="answer"
+                                    disabled={numberQuestions === 0}
                                     onChange={(e) => setAnswer(Number(e.target.value))}
                                     ref={inputRef}
                                 />
                             </div>
                         </div>
-                        <ButtonGames onClick={() => handleAnswer()} disabled={numberQuestions === 0}>Перевірити результат</ButtonGames>
+                        <ButtonGames
+                        // {selectedOperator, buttonRef, setNumberQuestions,setOneNumber, setTwoNumber, setThreeNumber, setOneSign, setTwoSign, setResult, setError, range }
+                            onClick={() => handleAnswer({
+                                setAnswer,
+                                setCorrectAnswer,
+                                setIncorrectAnswer,
+                                setGameEnd,
+                                inputRef,
+                                resultRef,
+                                numberQuestions,
+                                answer, 
+                                result, 
+                                styles,
+                                selectedOperator, 
+                                buttonRef, 
+                                setNumberQuestions,
+                                setOneNumber, 
+                                setTwoNumber, 
+                                setThreeNumber, 
+                                setOneSign, 
+                                setTwoSign, 
+                                setResult, 
+                                setError, 
+                                range 
+                            })
+                            }
+                            disabled={numberQuestions === 0 || answer === null}
+                        >
+                            Перевірити результат
+                        </ButtonGames>
                         <div className={styles['block-button']}>
                             <ButtonGames link="/tasks">До завдань</ButtonGames>
-                            <ButtonGames onClick={handleStartGame} ref={buttonRef}>Старт</ButtonGames>
-                            <ButtonGames onClick={handleStopGame}>Завершити</ButtonGames>
+                            <ButtonGames
+                                onClick={() => handleStartGame({
+                                    selectedOperator,
+                                    buttonRef,
+                                    setNumberQuestions,
+                                    setOneNumber,
+                                    setTwoNumber,
+                                    setThreeNumber,
+                                    setOneSign,
+                                    setTwoSign,
+                                    setResult,
+                                    setError,
+                                    range,
+                                    styles
+                                })}
+                                ref={buttonRef}
+                            >
+                                Старт
+                            </ButtonGames>
+                            <ButtonGames
+                                onClick={() => handleStopGame({
+                                    buttonRef,
+                                    blockInfoGamesRef,
+                                    containerGamesRef,
+                                    setGameEnd,
+                                    setNumberQuestions,
+                                    setIncorrectAnswer,
+                                    setCorrectAnswer,
+                                    styles
+                                })}
+                            >
+                                Завершити
+                            </ButtonGames>
                         </div>
                         <div className={styles['block-error']}>
                             <span>{error}</span>
