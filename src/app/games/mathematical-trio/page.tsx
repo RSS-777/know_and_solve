@@ -18,15 +18,14 @@ const Mathematical = () => {
     const [incorrectAnswer, setIncorrectAnswer] = useState<number>(0)
     const [numberQuestions, setNumberQuestions] = useState<number>(0)
     const [gameEnd, setGameEnd] = useState<boolean>(false)
-
     const [range, setRange] = useState<number>(5)
     const [selectedOperator, setSelectedOperator] = useState<string[]>([])
-
     const resultRef = useRef<HTMLDivElement | null>(null);
     const inputRef = useRef<HTMLInputElement | null>(null);
     const buttonRef = useRef<HTMLButtonElement | null>(null)
     const blockInfoGamesRef = useRef<HTMLDivElement | null>(null)
     const containerGamesRef = useRef<HTMLDivElement | null>(null)
+    const audioRef = useRef<HTMLAudioElement[]>([])
 
     useEffect(() => {
         if (gameEnd) {
@@ -42,15 +41,9 @@ const Mathematical = () => {
                 buttonRef.current?.classList.remove(styles['not-active'])
                 blockInfoGamesRef.current?.classList.remove(styles['show-information-block'])
                 containerGamesRef.current?.classList.remove(styles['hidden-element'])
-            }, 5000)
+            }, 10000)
         }
     }, [gameEnd])
-
-    // handleStartGame({selectedOperator, buttonRef, setNumberQuestions,setOneNumber, setTwoNumber, setThreeNumber, setOneSign, setTwoSign, setResult, setError, range, styles })
-
-    // handleStopGame({buttonRef, blockInfoGamesRef, containerGamesRef, setGameEnd, setNumberQuestions, setIncorrectAnswer, setCorrectAnswer, setGameEnd, styles}) 
-
-    // handleAnswer({setAnswer, setCorrectAnswer, setIncorrectAnswer,, setGameEnd,  inputRef,  resultRef, numberQuestions, answer, result})
 
     const handleSignOperation = (value: string) => {
         setSelectedOperator(prev => {
@@ -157,12 +150,12 @@ const Mathematical = () => {
                             </div>
                         </div>
                         <ButtonGames
-                        // {selectedOperator, buttonRef, setNumberQuestions,setOneNumber, setTwoNumber, setThreeNumber, setOneSign, setTwoSign, setResult, setError, range }
                             onClick={() => handleAnswer({
                                 setAnswer,
                                 setCorrectAnswer,
                                 setIncorrectAnswer,
                                 setGameEnd,
+                                audioRef,
                                 inputRef,
                                 resultRef,
                                 numberQuestions,

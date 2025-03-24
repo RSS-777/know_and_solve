@@ -5,11 +5,29 @@ const generateRandomNumb = (number: number) => {
     return numb
 };
 
-
 const generateSign = (arrSign: string[]) => {
     const numb = Math.floor(Math.random() * arrSign.length)
     return arrSign[numb]
 };
+
+type TypeSoundParams = {
+    index: number;
+    soundPath: string;
+    audioRef: RefObject<HTMLAudioElement[]>;
+};
+
+const playSound = ({index, soundPath, audioRef}: TypeSoundParams) => {
+    if (!audioRef.current[index]) {
+        audioRef.current[index] = new Audio(soundPath)
+    }
+
+    audioRef.current[index].play()
+
+    setTimeout(() => {
+        audioRef.current[index].pause();
+        audioRef.current[index].currentTime = 0;
+    }, 10000)
+}
 
 type TypeClearValuesParams = {
     setOneNumber: Dispatch<SetStateAction<number>>;
@@ -78,7 +96,7 @@ type TypeStartGameParams = TypeClearValuesParams & {
     range: number;
     styles: Record<string, string>;
 }
-// handleStartGame({selectedOperator, buttonRef, setNumberQuestions,setOneNumber, setTwoNumber, setThreeNumber, setOneSign, setTwoSign, setResult, setError, range, styles })
+
 const handleStartGame = ({
     selectedOperator,
     buttonRef,
@@ -181,7 +199,7 @@ type TypeStopGameParams = {
     setIncorrectAnswer: Dispatch<SetStateAction<number>>;
     styles: Record<string, string>;
 }
-// handleStopGame({buttonRef, blockInfoGames, containerGamesRef, setGameEnd, setNumberQuestions, setIncorrectAnswer, setCorrectAnswer, styles}) 
+
 const handleStopGame = ({ buttonRef, blockInfoGamesRef, containerGamesRef, setGameEnd, setNumberQuestions, setIncorrectAnswer, setCorrectAnswer, styles }: TypeStopGameParams) => {
     buttonRef.current?.classList.remove(styles['not-active'])
     blockInfoGamesRef.current?.classList.add(styles['show-information-block'])
@@ -200,6 +218,7 @@ const handleStopGame = ({ buttonRef, blockInfoGamesRef, containerGamesRef, setGa
 
 type TypeAnswerParams = Pick<TypeStopGameParams, 'setCorrectAnswer' | 'setIncorrectAnswer' | 'setGameEnd' | 'styles'> & {
     setAnswer: Dispatch<SetStateAction<number | null>>;
+    audioRef: RefObject<HTMLAudioElement[]>;
     inputRef: RefObject<HTMLInputElement | null>;
     resultRef: RefObject<HTMLDivElement | null>;
     numberQuestions: number;
@@ -207,14 +226,37 @@ type TypeAnswerParams = Pick<TypeStopGameParams, 'setCorrectAnswer' | 'setIncorr
     result: number | null;
 } & TypeStartGameParams;
 
-
-// selectedOperator, buttonRef, setNumberQuestions,setOneNumber, setTwoNumber, setThreeNumber, setOneSign, setTwoSign, setResult, setError, range 
-const handleAnswer = ({setAnswer, setCorrectAnswer, setIncorrectAnswer, setGameEnd,  inputRef,  resultRef, numberQuestions, answer, result, styles , selectedOperator, buttonRef, setNumberQuestions,setOneNumber, setTwoNumber, setThreeNumber, setOneSign, setTwoSign, setResult, setError, range  }: TypeAnswerParams) => {
+const handleAnswer = ({
+    setAnswer,
+    setCorrectAnswer,
+    setIncorrectAnswer,
+    setGameEnd,
+    audioRef,
+    inputRef,
+    resultRef,
+    numberQuestions,
+    answer,
+    result,
+    styles,
+    selectedOperator,
+    buttonRef,
+    setNumberQuestions,
+    setOneNumber,
+    setTwoNumber,
+    setThreeNumber,
+    setOneSign,
+    setTwoSign,
+    setResult,
+    setError,
+    range
+}: TypeAnswerParams) => {
     if (answer === result) {
         setAnswer(null)
         setCorrectAnswer(prev => prev = prev + 1)
+        playSound({ index: 1, soundPath: '/sound/mathematical/ok.mp3', audioRef });
         inputRef.current?.classList.add(styles['hidden-input'])
         resultRef.current?.classList.add(styles['answer-correct'])
+
 
         setTimeout(() => {
             if (inputRef.current) {
@@ -227,12 +269,26 @@ const handleAnswer = ({setAnswer, setCorrectAnswer, setIncorrectAnswer, setGameE
                 setGameEnd(true)
                 return
             } else {
-                handleStartGame({selectedOperator, buttonRef, setNumberQuestions,setOneNumber, setTwoNumber, setThreeNumber, setOneSign, setTwoSign, setResult, setError, range, styles })
+                handleStartGame({
+                    selectedOperator,
+                    buttonRef,
+                    setNumberQuestions,
+                    setOneNumber,
+                    setTwoNumber,
+                    setThreeNumber,
+                    setOneSign,
+                    setTwoSign,
+                    setResult,
+                    setError,
+                    range,
+                    styles
+                })
             }
         }, 3000)
     } else {
         setAnswer(null)
         setIncorrectAnswer(prev => prev = prev + 1)
+        playSound({ index: 2, soundPath: '/sound/mathematical/fail_2.mp3', audioRef });
         inputRef.current?.classList.add(styles['hidden-input'])
         resultRef.current?.classList.add(styles['answer-not-correct'])
 
@@ -245,12 +301,26 @@ const handleAnswer = ({setAnswer, setCorrectAnswer, setIncorrectAnswer, setGameE
 
             if (numberQuestions === 3) {
                 setGameEnd(true)
+                playSound({ index: 3, soundPath: '/sound/mathematical/win.mp3', audioRef });
                 return
             } else {
-                handleStartGame({selectedOperator, buttonRef, setNumberQuestions,setOneNumber, setTwoNumber, setThreeNumber, setOneSign, setTwoSign, setResult, setError, range, styles })
+                handleStartGame({
+                    selectedOperator,
+                    buttonRef,
+                    setNumberQuestions,
+                    setOneNumber,
+                    setTwoNumber,
+                    setThreeNumber,
+                    setOneSign,
+                    setTwoSign,
+                    setResult,
+                    setError,
+                    range,
+                    styles
+                })
             }
         }, 3000)
     }
 }
 
-export { clearValues, handleStartGame, handleStopGame, handleAnswer };
+export { clearValues, handleStartGame, handleStopGame, handleAnswer, playSound };
