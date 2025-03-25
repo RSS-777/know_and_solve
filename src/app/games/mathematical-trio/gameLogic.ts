@@ -21,11 +21,20 @@ const playSound = ({ index, soundPath, audioRef }: TypeSoundParams) => {
         audioRef.current[index] = new Audio(soundPath)
     }
 
-    audioRef.current[index].play()
+    const audio = audioRef.current[index];
+
+    if (!audio.paused) {
+        audio.pause();
+        audio.currentTime = 0;
+    }
+
+    audio.play().catch((error) => {
+        console.error("Error playing audio:", error);
+    });
 
     setTimeout(() => {
-        audioRef.current[index].pause();
-        audioRef.current[index].currentTime = 0;
+        audio.pause();
+        audio.currentTime = 0;
     }, 10000)
 }
 
@@ -75,12 +84,14 @@ const calculate = ({ oneSign, twoSign, oneNumber, twoNumber, threeNumber }: Type
     if (oneSign === '*' && twoSign === '-') result = oneNumber * twoNumber - threeNumber
     if (oneSign === '+' && twoSign === '*') result = oneNumber + (twoNumber * threeNumber)
     if (oneSign === '-' && twoSign === '*') result = oneNumber - (twoNumber * threeNumber)
+    if (oneSign === '*' && twoSign === '/') result = (oneNumber * twoNumber) / threeNumber
 
     if (oneSign === '/' && twoSign === '/') result = oneNumber / twoNumber / threeNumber
     if (oneSign === '/' && twoSign === '+') result = oneNumber / twoNumber + threeNumber
     if (oneSign === '/' && twoSign === '-') result = oneNumber / twoNumber - threeNumber
     if (oneSign === '+' && twoSign === '/') result = oneNumber + (twoNumber / threeNumber)
     if (oneSign === '-' && twoSign === '/') result = oneNumber - (twoNumber / threeNumber)
+    if (oneSign === '/' && twoSign === '*') result = (oneNumber / twoNumber) * threeNumber
 
     return result
 }
@@ -148,21 +159,26 @@ const handleStartGame = ({
             }
         }
 
-        // Логіка для множення 
+        // Логіка для множення першого знаку
         if (oneS === '*') {
-            if (firstNum * secondNum < threeNumb) {
-                threeNumb = generateRandomNumb(firstNum * secondNum)
+            if (twoS === '-') {
+                threeNumb = (firstNum * secondNum < threeNumb) ? generateRandomNumb(firstNum * secondNum) : threeNumb
             }
 
-            if (twoS === '*') {
-
+            if (twoS === '/') {
+                while((firstNum * secondNum) % threeNumb !== 0)
+                threeNumb = generateRandomNumb(range)
             }
         }
 
         // Логіка для ділення 
         if (oneS === '/') {
+            while((firstNum / secondNum) % 1 !== 0) {
+               firstNum = generateRandomNumb(range)
+            }
+       
             if (twoS === '/') {
-
+                threeNumb = ((firstNum / secondNum) % threeNumb !== 0 ) ? generateRandomNumb(firstNum / secondNum) : threeNumb
             }
         }
 
@@ -278,10 +294,12 @@ const handleAnswer = ({
             resultRef.current?.classList.remove(styles['answer-correct'])
 
             if (numberQuestions === 20) {
-                setGameEnd(true)
-                correctAnswer < 17
-                    ? playSound({ index: 4, soundPath: '/sound/mathematical/fail_sound.mp3', audioRef })
-                    : playSound({ index: 3, soundPath: '/sound/mathematical/win.mp3', audioRef })
+                setGameEnd(true);
+                if (correctAnswer < 17) {
+                    playSound({ index: 4, soundPath: '/sound/mathematical/fail_sound.mp3', audioRef })
+                } else {
+                    playSound({ index: 3, soundPath: '/sound/mathematical/win.mp3', audioRef })
+                }
                 return
             } else {
                 handleStartGame({
@@ -316,9 +334,11 @@ const handleAnswer = ({
 
             if (numberQuestions === 20) {
                 setGameEnd(true)
-                correctAnswer < 17
-                    ? playSound({ index: 4, soundPath: '/sound/mathematical/fail_sound.mp3', audioRef })
-                    : playSound({ index: 3, soundPath: '/sound/mathematical/win.mp3', audioRef })
+                if (correctAnswer < 17) {
+                    playSound({ index: 4, soundPath: '/sound/mathematical/fail_sound.mp3', audioRef })
+                } else {
+                    playSound({ index: 3, soundPath: '/sound/mathematical/win.mp3', audioRef })
+                }
                 return
             } else {
                 handleStartGame({
