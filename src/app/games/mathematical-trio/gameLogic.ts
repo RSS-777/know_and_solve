@@ -159,6 +159,18 @@ const handleStartGame = ({
             }
         }
 
+        if(oneS === '+') {
+            if(twoS === '-') {
+               threeNumb = ((firstNum + secondNum) < threeNumb) ? generateRandomNumb(firstNum + secondNum) : threeNumb
+            }
+
+            if(twoS === '/') {
+                while(secondNum % threeNumb !== 0) {
+                    secondNum = generateRandomNumb(range) 
+                }
+            }
+        }
+
         // Логіка для множення першого знаку
         if (oneS === '*') {
             if (twoS === '-') {
