@@ -67,7 +67,10 @@ const Mathematical = () => {
     return (
         <div className={styles.container}>
             <h2>Математичне тріо</h2>
-            <div className={styles['block-info-games']} ref={blockInfoGamesRef}>
+            <div
+                className={(numberQuestions === 20 && correctAnswer >= 17) ? styles['block-info-games'] : styles['block-info-games-lose']}
+                ref={blockInfoGamesRef}
+            >
                 <p>Ваш результат:</p>
                 <ul>
                     <li>Кількість запитань: <span>{numberQuestions}</span></li>
@@ -159,20 +162,21 @@ const Mathematical = () => {
                                 inputRef,
                                 resultRef,
                                 numberQuestions,
-                                answer, 
-                                result, 
+                                answer,
+                                result,
                                 styles,
-                                selectedOperator, 
-                                buttonRef, 
+                                selectedOperator,
+                                buttonRef,
                                 setNumberQuestions,
-                                setOneNumber, 
-                                setTwoNumber, 
-                                setThreeNumber, 
-                                setOneSign, 
-                                setTwoSign, 
-                                setResult, 
-                                setError, 
-                                range 
+                                setOneNumber,
+                                setTwoNumber,
+                                setThreeNumber,
+                                setOneSign,
+                                setTwoSign,
+                                setResult,
+                                setError,
+                                range,
+                                correctAnswer
                             })
                             }
                             disabled={numberQuestions === 0 || answer === null}
@@ -209,8 +213,10 @@ const Mathematical = () => {
                                     setNumberQuestions,
                                     setIncorrectAnswer,
                                     setCorrectAnswer,
-                                    styles
+                                    styles,
+                                    audioRef
                                 })}
+                                disabled={numberQuestions === 0}
                             >
                                 Завершити
                             </ButtonGames>

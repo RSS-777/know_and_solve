@@ -16,7 +16,7 @@ type TypeSoundParams = {
     audioRef: RefObject<HTMLAudioElement[]>;
 };
 
-const playSound = ({index, soundPath, audioRef}: TypeSoundParams) => {
+const playSound = ({ index, soundPath, audioRef }: TypeSoundParams) => {
     if (!audioRef.current[index]) {
         audioRef.current[index] = new Audio(soundPath)
     }
@@ -36,7 +36,6 @@ type TypeClearValuesParams = {
     setResult: Dispatch<SetStateAction<number | null>>;
     setAnswer?: Dispatch<SetStateAction<number | null>>;
     inputRef?: RefObject<HTMLInputElement | null>;
-
 }
 
 const clearValues = ({
@@ -198,22 +197,34 @@ type TypeStopGameParams = {
     setCorrectAnswer: Dispatch<SetStateAction<number>>;
     setIncorrectAnswer: Dispatch<SetStateAction<number>>;
     styles: Record<string, string>;
-}
+    audioRef: RefObject<HTMLAudioElement[]>;
+};
 
-const handleStopGame = ({ buttonRef, blockInfoGamesRef, containerGamesRef, setGameEnd, setNumberQuestions, setIncorrectAnswer, setCorrectAnswer, styles }: TypeStopGameParams) => {
+const handleStopGame = ({
+    buttonRef,
+    blockInfoGamesRef,
+    containerGamesRef,
+    setGameEnd,
+    setNumberQuestions,
+    setIncorrectAnswer,
+    setCorrectAnswer,
+    styles,
+    audioRef
+}: TypeStopGameParams) => {
     buttonRef.current?.classList.remove(styles['not-active'])
     blockInfoGamesRef.current?.classList.add(styles['show-information-block'])
     containerGamesRef.current?.classList.add(styles['hidden-element'])
     setGameEnd(true)
+    playSound({ index: 4, soundPath: '/sound/mathematical/fail_sound.mp3', audioRef })
 
     setTimeout(() => {
         setNumberQuestions(0)
         setIncorrectAnswer(0)
         setCorrectAnswer(0)
-        setGameEnd(false)
         blockInfoGamesRef.current?.classList.remove(styles['show-information-block'])
         containerGamesRef.current?.classList.remove(styles['hidden-element'])
-    }, 5000)
+        setGameEnd(false)
+    }, 10000)
 }
 
 type TypeAnswerParams = Pick<TypeStopGameParams, 'setCorrectAnswer' | 'setIncorrectAnswer' | 'setGameEnd' | 'styles'> & {
@@ -224,6 +235,7 @@ type TypeAnswerParams = Pick<TypeStopGameParams, 'setCorrectAnswer' | 'setIncorr
     numberQuestions: number;
     answer: number | null;
     result: number | null;
+    correctAnswer: number;
 } & TypeStartGameParams;
 
 const handleAnswer = ({
@@ -248,7 +260,8 @@ const handleAnswer = ({
     setTwoSign,
     setResult,
     setError,
-    range
+    range,
+    correctAnswer
 }: TypeAnswerParams) => {
     if (answer === result) {
         setAnswer(null)
@@ -256,7 +269,6 @@ const handleAnswer = ({
         playSound({ index: 1, soundPath: '/sound/mathematical/ok.mp3', audioRef });
         inputRef.current?.classList.add(styles['hidden-input'])
         resultRef.current?.classList.add(styles['answer-correct'])
-
 
         setTimeout(() => {
             if (inputRef.current) {
@@ -267,7 +279,9 @@ const handleAnswer = ({
 
             if (numberQuestions === 20) {
                 setGameEnd(true)
-                playSound({ index: 3, soundPath: '/sound/mathematical/win.mp3', audioRef });
+                correctAnswer < 17
+                    ? playSound({ index: 4, soundPath: '/sound/mathematical/fail_sound.mp3', audioRef })
+                    : playSound({ index: 3, soundPath: '/sound/mathematical/win.mp3', audioRef })
                 return
             } else {
                 handleStartGame({
@@ -302,7 +316,9 @@ const handleAnswer = ({
 
             if (numberQuestions === 20) {
                 setGameEnd(true)
-                playSound({ index: 3, soundPath: '/sound/mathematical/win.mp3', audioRef });
+                correctAnswer < 17
+                    ? playSound({ index: 4, soundPath: '/sound/mathematical/fail_sound.mp3', audioRef })
+                    : playSound({ index: 3, soundPath: '/sound/mathematical/win.mp3', audioRef })
                 return
             } else {
                 handleStartGame({
