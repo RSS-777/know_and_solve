@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import styles from '../../styles/pages/tasks.module.scss';
 import imageArithmetic from '../../assets/images/arithmetic/cloud.png';
 import imageMathematical from '../../assets/images/mathematical/wrapperMathematical.png';
+import iconAlphabet from '../../assets/images/alphabet/icon-alphabet.png';
 
 export const metadata: Metadata = {
   title: "Завдання для школярів – Логічні, математичні та творчі задачі",
@@ -18,6 +19,7 @@ const Task = () => {
       <section className={styles['block-games']}>
         <GameCard h5="Математична пара" image={imageArithmetic} link="/games/arithmetic-trainer" />
         <GameCard h5="Математичне тріо" image={imageMathematical} link="/games/mathematical-trio" />
+        <GameCard h5="Алфавітна пригода" image={iconAlphabet} link="/games/alphabet-adventure" />
       </section>
     </div>
   )

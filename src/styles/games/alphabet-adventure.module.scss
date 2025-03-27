@@ -1,0 +1,87 @@
+@keyframes appear {
+    0% {
+        transform: scale(5) translateY(50px);
+        opacity: 0.6;
+    }
+
+    50% {
+        transform: scale(1) translateY(25px);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+.wrapper {
+    position: relative;
+    background-image: url('../../assets/images/alphabet/angliyskiy-fone.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: 2px solid green;
+    min-height: 100vh;
+    padding: 0 10px 10px;
+    user-select: none;
+
+    &::after {
+        content: '';
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.768);
+    }
+
+    h2 {
+        position: relative;
+        z-index: 3;
+        text-align: center;
+    }
+}
+
+.container-games {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 400px;
+    border: 2px solid red;
+}
+
+.list-letters {
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    min-height: 100px;
+    max-width: 800px;
+    margin: 20px auto;
+
+    li {
+        color: blue;
+        border: 2px solid blue;
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
+        text-align: center;
+        line-height: 60px;
+        border-radius: 5px;
+        box-shadow: 1px 1px 5px 0 blue;
+        cursor: pointer;
+        animation: appear 3s ease-out forwards;
+
+        &:hover {
+            color: red;
+            border: 2px solid red;
+        }
+    }
+}
+
+;
