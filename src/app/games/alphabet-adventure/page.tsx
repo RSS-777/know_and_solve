@@ -39,7 +39,7 @@ const AlphabetAdventure = () => {
     };
 
     const handleStartGame = () => {
-        setSoundEnabled(true);
+        setSoundEnabled(true)
     };
 
     return (
@@ -47,7 +47,7 @@ const AlphabetAdventure = () => {
             <h2>Алфавітна пригода</h2>
             <div className={styles['container-games']}>
                 <ul className={styles['list-letters']}>
-                    {visibleLetters.map((el, index) => (
+                    {visibleLetters.map((el) => (
                         <li
                             key={el}
                             onClick={() => handleLetterClick(el)}
