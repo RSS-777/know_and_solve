@@ -1,10 +1,8 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-
 import { ButtonGames } from '../../../components/ButtonGames';
 import styles from '../../../styles/games/alphabet-adventure.module.scss';
-const soundLetter = '/sound/alphabet-adventure/letters/letter-';
 
 const letters = [
     'Aa', 'Bb', 'Cc', 'Dd', 'Ee', 'Ff', 'Gg', 'Hh', 'Ii', 'Jj', 'Kk', 'Ll',
@@ -13,11 +11,10 @@ const letters = [
 ];
 
 const playLetters = (letter: string) => {
-    const soundPath = soundLetter.concat(`${letter[0]}.mp3`)
+    const soundPath = `/sound/alphabet-adventure/letters/letter-${letter[0]}.mp3`
     const audio = new Audio(soundPath);
     audio.play();
 };
-
 
 const AlphabetAdventure = () => {
     const [visibleLetters, setVisibleLetters] = useState<string[]>([])
