@@ -11,7 +11,8 @@ const letters = [
 ];
 
 const playLetters = (letter: string) => {
-    const soundPath = `/sound/alphabet-adventure/letters/letter-${letter[0]}.mp3`
+    const soundPath = `/sound/alphabet-adventure/letters/letter-${letter[1]}.mp3`
+    console.log('path', soundPath)
     const audio = new Audio(soundPath);
     audio.play();
 };
