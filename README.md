@@ -13,6 +13,5 @@
 
 ### **Technologies:**
 
-- **Next.js** – for server-side rendering and optimization to improve loading speed.
-- **React** – for creating dynamic and interactive user interfaces.
-- **SCSS and Styled Components** – for styling and customizing the appearance of the application.
+- **Next.js** 
+- **SCSS** 
