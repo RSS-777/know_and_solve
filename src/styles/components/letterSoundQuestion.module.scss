@@ -1,0 +1,76 @@
+.container {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   min-height: 280px;
+
+   h3 {
+      text-align: center;
+      padding: 0 20px;
+      font-size: 18px;
+   }
+   >p {
+      display: flex;
+      align-items: center;
+
+      span {
+         color: blue;
+         width: 60px;
+         height: 60px;
+         font-size: 28px;
+         text-align: center;
+         line-height: 60px;
+         border-radius: 5px;
+      }
+   }
+
+   button {
+      color: blue;
+      border-radius: 50%;
+      border: none;
+      width: 100px;
+      height: 100px;
+      box-shadow: 0 0 8px 1px blue;
+
+      &:hover {
+         color: coral;
+         box-shadow: 0 0 3px 1px coral;
+      }
+
+   }
+
+   .isListening {
+      color: coral;
+      box-shadow: 0 0 3px 1px coral;
+   }
+
+   .correctedAnswer {
+      background-color: rgb(176, 255, 176);
+      background-image: url('../../assets/images/arithmetic/ok.png');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 50px;
+      box-shadow: 0 0 8px 1px green;
+   }
+
+   .notCorrectedAnswer {
+      background-color: rgb(255, 132, 132);
+      background-image: url('../../assets/images/arithmetic/close.png');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 50px;
+      box-shadow: 0 0 8px 1px red;
+   }
+}
+
+.message {
+   font-size: 16px;
+   height: 60px;
+
+   i {
+      color: blue;
+      font-size: 24px;
+      padding: 0 10px 0 5px;
+      
+   }
+}

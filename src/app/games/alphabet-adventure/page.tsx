@@ -3,23 +3,24 @@
 import { useState, useEffect } from 'react';
 import { ButtonGames } from '../../../components/ButtonGames';
 import styles from '../../../styles/games/alphabet-adventure.module.scss';
-
-const letters = [
-    'Aa', 'Bb', 'Cc', 'Dd', 'Ee', 'Ff', 'Gg', 'Hh', 'Ii', 'Jj', 'Kk', 'Ll',
-    'Mm', 'Nn', 'Oo', 'Pp', 'Qq', 'Rr', 'Ss', 'Tt', 'Uu', 'Vv', 'Ww', 'Xx',
-    'Yy', 'Zz'
-];
-
-const playLetters = (letter: string) => {
-    const soundPath = `/sound/alphabet-adventure/letters/letter-${letter[1]}.mp3`
-    console.log('path', soundPath)
-    const audio = new Audio(soundPath);
-    audio.play();
-};
+import { letters } from '../../../data/letters';
+import { playLetters } from './gameLogic';
+import { LetterSoundQuestion } from '../../../components/LetterSoundQuestion';
 
 const AlphabetAdventure = () => {
     const [visibleLetters, setVisibleLetters] = useState<string[]>([])
-    const [soundEnabled, setSoundEnabled] = useState<boolean>(false);
+    const [soundEnabled, setSoundEnabled] = useState<boolean>(false)
+    const [nextStage, setNextStage] = useState<boolean>(false)
+
+    useEffect(() => {
+       if(visibleLetters.length === 26) {
+          setTimeout(() => {
+             setNextStage(true)
+          }, 3000)
+       } else {
+           setNextStage(false)
+       }
+    },[visibleLetters])
 
     useEffect(() => {
         if (!soundEnabled) return;
@@ -45,18 +46,22 @@ const AlphabetAdventure = () => {
             <h2>Алфавітна пригода</h2>
             <div className={styles['container-games']}>
                 {soundEnabled
-                    ? (<ul className={styles['list-letters']}>
-                        {visibleLetters.map((el) => (
-                            <li
-                                key={el}
-                                onClick={() => handleLetterClick(el)}
-                            >
-                                {el}
-                            </li>
-                        ))}
-                    </ul>
+                    ? (
+                        <section>
+                            <ul className={styles['list-letters']}>
+                                {visibleLetters.map((el) => (
+                                    <li
+                                        key={el}
+                                        onClick={() => handleLetterClick(el)}
+                                    >
+                                        {el}
+                                    </li>
+                                ))}
+                            </ul>
+                            {nextStage && <LetterSoundQuestion />}
+                        </section>
                     ) : (
-                        <div className={styles['container-information']}>
+                        <section className={styles['container-information']}>
                             <h3>Як вивчити англійську мову:</h3>
                             <p>
                                 Привіт, маленький досліднику! 🌟 Вивчати англійську мову – це весело і дуже цікаво. Коли ти знатимеш англійську, зможеш розуміти пісні, дивитися мультики без перекладу, грати в ігри англійською та навіть знайти друзів з інших країн!
@@ -77,17 +82,6 @@ const AlphabetAdventure = () => {
                                     </div>
                                 </li>
                                 <li>
-                                    <h4>Співай англійські пісеньки 🎵</h4><br />
-                                    <div className={styles['li-content']}>
-                                        Пісеньки – це чудовий спосіб вивчати нові слова та запам’ятовувати їх! Ось кілька веселих прикладів:
-                                        <ul>
-                                            <li><span>ABC Song</span> (пісенька про англійський алфавіт)</li>
-                                            <li><span>If You’re Happy and You Know It</span></li>
-                                            <li><span>Twinkle, Twinkle, Little Star</span></li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li>
                                     <h4>Дивись мультики англійською 📺</h4><br />
                                     <div className={styles['li-content']}>
                                         Ти любиш мультики?
@@ -97,7 +91,7 @@ const AlphabetAdventure = () => {
                                 </li>
                                 <li>
                                     <h4>Грай у мовні ігри 🎲</h4><br />
-                                    <div  className={styles['li-content']}>
+                                    <div className={styles['li-content']}>
                                         Грати – це весело і корисно! Є багато ігор для вивчення англійської:
                                         <ul>
                                             <li>Вгадай слово за картинкою.</li>
@@ -108,7 +102,7 @@ const AlphabetAdventure = () => {
                                 </li>
                                 <li>
                                     <h4>Повторюй алфавіт 🔤</h4><br />
-                                    <div  className={styles['li-content']}>
+                                    <div className={styles['li-content']}>
                                         Вчи букви англійського алфавіту, співай пісеньку ABC Song і пробуй називати предмети, які починаються з кожної літери.
                                         <br />Наприклад:
                                         <ul>
@@ -137,39 +131,18 @@ const AlphabetAdventure = () => {
                                         <br /> Можна повторювати слова, співати пісні, дивитися мультики або грати в ігри.
                                     </div>
                                 </li>
-                                <li>
-                                    <h4>Не бійся робити помилки 💡</h4><br />
-                                    <div className={styles['li-content']}>
-                                        Коли ти вчиш англійську, робити помилки – це нормально! Навіть дорослі роблять помилки. 
-                                        <br />Головне – не зупинятися і пробувати знову.
-                                    </div>
-                                </li>
-                                <li>
-                                    <h4>Питай у батьків або вчителя 👩‍🏫</h4><br />
-                                    <div className={styles['li-content']}>
-                                        Якщо щось незрозуміло, запитуй дорослих. Вони завжди допоможуть тобі розібратися.
-                                    </div>
-                                </li>
-                                <li>
-                                    <h4>Веселися та радій своїм успіхам! 🎉</h4><br />
-                                    <div className={styles['li-content']}>
-                                        Навчання має бути цікавим. Коли ти вивчиш нове слово чи фразу, похвали себе!
-                                        <br /><span>Ти – молодець!</span>
-                                    </div>
-                                </li>
                             </ol>
                             <p>
                                 <strong>Пам’ятай:</strong>
                                 <br /><i>Англійська</i> – це як чарівні двері в великий світ! Вчися щодня, грайся, слухай пісеньки – і ти дуже швидко почнеш розуміти англійську. 🌍🧸
                             </p>
-                        </div>
+                        </section>
                     )
                 }
-                <div>
-                    <ButtonGames link="/tasks">До завдань</ButtonGames>
-                    <ButtonGames onClick={handleStartGame}>Старт</ButtonGames>
-                    {/* <ButtonGames onClick={handleStopGame}>Завершити</ButtonGames> */}
-                </div>
+            </div>
+            <div className={styles['block-button']}>
+                <ButtonGames link="/tasks">Повернутись</ButtonGames>
+                <ButtonGames onClick={handleStartGame} disabled={nextStage || soundEnabled}>Почати гру</ButtonGames>
             </div>
         </div>
     );
