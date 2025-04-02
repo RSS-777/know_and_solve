@@ -7,7 +7,6 @@ const playLetters = (letter: string) => {
 };
 
 const playSoundAnswer = (isCorrect: boolean) => {
-    console.log('playSound', isCorrect)
     const pathSound = isCorrect ? `/sound/alphabet-adventure/game-won.mp3` : `/sound/alphabet-adventure/game-fail.mp3`
     const audio = new Audio(pathSound)
     audio.play()
@@ -84,8 +83,8 @@ const speechToText = ({
     letter,
     genereteLetter,
     setCorrectedAnswer,
-    setDisabledButton,
-}: SpeechToTextParams) => {
+    setDisabledButton
+}: SpeechToTextParams, timeClearMessage: React.MutableRefObject<NodeJS.Timeout | null>) => {
     if (typeof window === "undefined") return
 
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition
@@ -97,10 +96,16 @@ const speechToText = ({
     recognition.maxAlternatives = 1
 
     let timeoutId: NodeJS.Timeout
+    let answer = ''
 
     recognition.onstart = () => {
+        if (timeClearMessage.current) {
+            clearTimeout(timeClearMessage.current);
+        }
+
         setIsListening(true)
         setMessage("")
+        answer = ''
         timeoutId = setTimeout(() => recognition.stop(), 5000)
     };
 
@@ -113,7 +118,8 @@ const speechToText = ({
         recognition.stop();
 
         const transcript = event.results[0][0].transcript
-        setAnswer(transcript)
+        answer = transcript
+        setAnswer(transcript.split(' ')[0])
 
         if (transcript && letter) {
             checkAnswer({
@@ -132,13 +138,14 @@ const speechToText = ({
         setIsListening(false)
         clearTimeout(timeoutId)
 
-        setAnswer((prevAnswer) => {
-            if (!prevAnswer.trim()) {
-                setMessage("Не почув відповіді, спробуй ще раз.")
-                setTimeout(() => setMessage(""), 5000)
+        if (!answer) {
+            setMessage("Не почув відповіді, спробуй ще раз.")
+            timeClearMessage.current = setTimeout(() => setMessage(""), 5000)
+        } else {
+            if (timeClearMessage.current) {
+                clearTimeout(timeClearMessage.current);
             }
-            return prevAnswer
-        });
+        }
     };
 
     recognition.onerror = (event) => {

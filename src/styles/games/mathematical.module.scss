@@ -171,6 +171,8 @@
 
         .block-button {
             user-select: none;
+            display: flex;
+            gap: 5px;
 
             .not-active {
                 color: gray;

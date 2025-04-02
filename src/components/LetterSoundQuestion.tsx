@@ -1,5 +1,5 @@
 "use client"
-import { memo, useState, useEffect, useCallback } from 'react';
+import { memo, useState, useEffect, useCallback, useRef } from 'react';
 import styles from '../styles/components/letterSoundQuestion.module.scss';
 import { generateRandomLetter, checkAnswer, speechToText } from '../app/games/alphabet-adventure/gameLogic';
 
@@ -10,6 +10,7 @@ export const LetterSoundQuestion = memo(() => {
   const [disabledButton, setDisabledButton] = useState<boolean>(false)
   const [correctedAnswer, setCorrectedAnswer] = useState<boolean>(false)
   const [message, setMessage] = useState<string>('')
+  const timeClearMessage = useRef<NodeJS.Timeout | null>(null);
 
   const genereteLetter = useCallback(() => {
     const letterRandom = generateRandomLetter()
@@ -32,8 +33,8 @@ export const LetterSoundQuestion = memo(() => {
       letter,
       genereteLetter,
       setCorrectedAnswer,
-      setDisabledButton,
-    });
+      setDisabledButton
+    }, timeClearMessage);
   }
 
   return (
