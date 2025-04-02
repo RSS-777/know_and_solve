@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ButtonGames } from '../../../components/ButtonGames';
 import styles from '../../../styles/games/alphabet-adventure.module.scss';
 import { letters } from '../../../data/letters';
@@ -11,26 +11,40 @@ const AlphabetAdventure = () => {
     const [visibleLetters, setVisibleLetters] = useState<string[]>([])
     const [soundEnabled, setSoundEnabled] = useState<boolean>(false)
     const [nextStage, setNextStage] = useState<boolean>(false)
+    const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
 
     useEffect(() => {
-       if(visibleLetters.length === 26) {
-          setTimeout(() => {
-             setNextStage(true)
-          }, 3000)
-       } else {
-           setNextStage(false)
-       }
-    },[visibleLetters])
+        if (visibleLetters.length === 26) {
+            setTimeout(() => {
+                setNextStage(true)
+            }, 3000)
+        } else {
+            setNextStage(false)
+        }
+    }, [visibleLetters])
 
     useEffect(() => {
-        if (!soundEnabled) return;
+        if (!soundEnabled) {
+            timeoutsRef.current.forEach(clearTimeout)
+            timeoutsRef.current = []
+            setVisibleLetters([])
+            return
+        }
 
         letters.forEach((el, index) => {
-            setTimeout(() => {
-                playLetters(el)
-                setVisibleLetters(prev => [...prev, el])
-            }, index * 3000)
-        })
+            const timeoutId = setTimeout(() => {
+                if (!soundEnabled) return;
+                playLetters(el);
+                setVisibleLetters(prev => [...prev, el]);
+            }, index * 3000);
+
+            timeoutsRef.current.push(timeoutId);
+        });
+
+        return () => {
+            timeoutsRef.current.forEach(clearTimeout);
+            timeoutsRef.current = [];
+        };
     }, [soundEnabled])
 
     const handleLetterClick = (letter: string) => {
@@ -40,6 +54,10 @@ const AlphabetAdventure = () => {
     const handleStartGame = () => {
         setSoundEnabled(true)
     };
+
+    const handleStopGame = () => {
+        setSoundEnabled(false)
+    }
 
     return (
         <div className={styles.wrapper}>
@@ -136,12 +154,17 @@ const AlphabetAdventure = () => {
                                 <strong>Пам’ятай:</strong>
                                 <br /><i>Англійська</i> – це як чарівні двері в великий світ! Вчися щодня, грайся, слухай пісеньки – і ти дуже швидко почнеш розуміти англійську. 🌍🧸
                             </p>
+                            <div className={styles.warning}>
+                                <strong>
+                                    Застереження: Гра використовує Web Speech API, який підтримується лише в браузері Google Chrome та деяких версіях Microsoft Edge. У інших браузерах робота голосового розпізнавання може бути недоступною. Рекомендуємо використовувати Chrome для коректної роботи.
+                                </strong>
+                            </div>
                         </section>
                     )
                 }
             </div>
             <div className={styles['block-button']}>
-                <ButtonGames link="/tasks">Повернутись</ButtonGames>
+                <ButtonGames link="/tasks" onClick={handleStopGame}>Повернутись</ButtonGames>
                 <ButtonGames onClick={handleStartGame} disabled={nextStage || soundEnabled}>Почати гру</ButtonGames>
             </div>
         </div>

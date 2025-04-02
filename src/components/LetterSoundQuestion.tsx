@@ -42,7 +42,7 @@ export const LetterSoundQuestion = memo(() => {
       <p>Назвіть слово на букву: <span>{letter}</span></p>
       <button
         onClick={handleStart}
-        disabled={disabledButton}
+        disabled={disabledButton || isListening || answer !== ''}
         className={(correctedAnswer && answer) ? styles['correctedAnswer'] : answer ? styles['notCorrectedAnswer'] : (isListening) ? styles.isListening : ''}
       >{isListening ? 'Cлухаю' : (answer) ? '' : 'Відповісти'}</button>
       {message && (

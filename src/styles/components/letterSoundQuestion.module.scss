@@ -9,6 +9,7 @@
       padding: 0 20px;
       font-size: 18px;
    }
+
    >p {
       display: flex;
       align-items: center;
@@ -31,10 +32,15 @@
       width: 100px;
       height: 100px;
       box-shadow: 0 0 8px 1px blue;
+      cursor: pointer;
 
       &:hover {
-         color: coral;
          box-shadow: 0 0 3px 1px coral;
+      }
+
+      &:disabled {
+         cursor: none;
+         pointer-events: none;
       }
 
    }
@@ -71,6 +77,6 @@
       color: blue;
       font-size: 24px;
       padding: 0 10px 0 5px;
-      
+
    }
 }

@@ -2,15 +2,15 @@ import { letters } from '../../../data/letters';
 
 const playLetters = (letter: string) => {
     const soundPath = `/sound/alphabet-adventure/letters/letter-${letter[1]}.mp3`
-    const audio = new Audio(soundPath);
-    audio.play();
+    const audio = new Audio(soundPath)
+    audio.play()
 };
 
 const playSoundAnswer = (isCorrect: boolean) => {
     console.log('playSound', isCorrect)
-    const pathSound = isCorrect ? `/sound/alphabet-adventure/game-won.mp3` : `/sound/alphabet-adventure/game-fail.mp3`;
-    const audio = new Audio(pathSound);
-    audio.play();
+    const pathSound = isCorrect ? `/sound/alphabet-adventure/game-won.mp3` : `/sound/alphabet-adventure/game-fail.mp3`
+    const audio = new Audio(pathSound)
+    audio.play()
 };
 
 const generateRandomLetter = () => {
@@ -33,31 +33,28 @@ const checkAnswer = ({ letter, answer, genereteLetter, setCorrectedAnswer, setMe
     const firstLetter = letter.toUpperCase().split('')[0]
     const answerLetter = answer.toUpperCase().split('')[0]
 
+    setDisabledButton(true)
+
     if (firstLetter === answerLetter) {
         setCorrectedAnswer(true)
         setMessage('Дуже добре Сергійко!')
-        setDisabledButton(true)
         playSoundAnswer(true)
-
-        setTimeout(() => {
-            setCorrectedAnswer(false)
-            setMessage('')
-            genereteLetter()
-            setAnswer('')
-            setDisabledButton(false)
-        }, 5000)
     } else {
         setCorrectedAnswer(false)
         setMessage('Не вірно, спробуй ще раз!')
-        setDisabledButton(true)
         playSoundAnswer(false)
-
-        setTimeout(() => {
-            setMessage('')
-            setAnswer('')
-            setDisabledButton(false)
-        }, 5000)
     }
+
+    setTimeout(() => {
+        setCorrectedAnswer(false)
+        setMessage('')
+        setAnswer('')
+        setDisabledButton(false)
+        if (firstLetter === answerLetter) {
+            genereteLetter()
+        }
+    }, 5000)
+
 };
 
 type SpeechToTextParams = {
@@ -89,34 +86,34 @@ const speechToText = ({
     setCorrectedAnswer,
     setDisabledButton,
 }: SpeechToTextParams) => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") return
 
-    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!Recognition) return;
+    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition
+    if (!Recognition) return
 
-    const recognition = new Recognition();
-    recognition.lang = "en-US";
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
+    const recognition = new Recognition()
+    recognition.lang = "en-US"
+    recognition.interimResults = false
+    recognition.maxAlternatives = 1
 
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: NodeJS.Timeout
 
     recognition.onstart = () => {
-        setIsListening(true);
-        setMessage("");
-        timeoutId = setTimeout(() => recognition.stop(), 5000);
+        setIsListening(true)
+        setMessage("")
+        timeoutId = setTimeout(() => recognition.stop(), 5000)
     };
 
     recognition.onspeechend = () => {
-        recognition.stop();
+        recognition.stop()
     };
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
         clearTimeout(timeoutId);
         recognition.stop();
 
-        const transcript = event.results[0][0].transcript;
-        setAnswer(transcript);
+        const transcript = event.results[0][0].transcript
+        setAnswer(transcript)
 
         if (transcript && letter) {
             checkAnswer({
@@ -132,26 +129,28 @@ const speechToText = ({
     };
 
     recognition.onend = () => {
-        setIsListening(false);
-        clearTimeout(timeoutId);
+        setIsListening(false)
+        clearTimeout(timeoutId)
 
         setAnswer((prevAnswer) => {
             if (!prevAnswer.trim()) {
-                setMessage("Не почув відповіді, спробуй ще раз.");
-                setTimeout(() => setMessage(""), 5000);
+                setMessage("Не почув відповіді, спробуй ще раз.")
+                setTimeout(() => setMessage(""), 5000)
             }
-            return prevAnswer;
+            return prevAnswer
         });
     };
 
     recognition.onerror = (event) => {
-        console.error("❌ Помилка розпізнавання:", event.error);
-        setIsListening(false);
-        clearTimeout(timeoutId);
-        recognition.abort();
+        console.error("❌ Помилка розпізнавання:", event.error)
+        setIsListening(false)
+        clearTimeout(timeoutId)
+        recognition.abort()
     };
 
-    recognition.start();
+    recognition.start()
 };
 
-export { playLetters, generateRandomLetter, checkAnswer, speechToText }
+export { playLetters, generateRandomLetter, checkAnswer, speechToText };
+
+
